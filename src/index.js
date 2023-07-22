@@ -3,13 +3,13 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const moongoose = require("mongoose");
+const dotenv = require("dotenv").config();
 
 const app = express();
 
 const port = 3900;
 
-let url =
-  "mongodb+srv://nicolaxortiz:nsop050802@tiendaqr.md3resv.mongodb.net/?retryWrites=true&w=majority";
+let url = process.env.MONGO_URL;
 
 moongoose.Promise = global.Promise;
 
