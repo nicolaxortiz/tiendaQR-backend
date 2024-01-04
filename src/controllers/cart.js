@@ -10,8 +10,6 @@ let controller = {
     let cart = new Cart();
 
     cart.user_id = params.user_id;
-    cart.createdAt = params.createdAt;
-    cart.updatedAt = params.updatedAt;
     cart.products = params.products;
 
     cart.save((err, cartStored) => {
@@ -52,7 +50,11 @@ let controller = {
   updateCart: (req, res) => {
     let params = req.body;
 
+    const fechaActual = new Date();
+    const fechaLocalColombiana = fechaActual.toLocaleString("es-CO");
+
     let updatedFields = {
+      updatedAt: fechaLocalColombiana,
       products: params.products,
     };
 
@@ -71,13 +73,35 @@ let controller = {
         if (!getCart) {
           return res.status(404).send({
             status: "error",
-            messsage: "No se encontroel carrito para actualizar",
+            messsage: "No se encontro el carrito para actualizar",
           });
         }
 
         return res.status(200).send({ status: "success", getCart });
       }
     );
+  },
+
+  delete: (req, res) => {
+    let cart_id = req.params.cartId;
+
+    Cart.findByIdAndRemove(cart_id, (err, deletedCart) => {
+      if (err) {
+        return res.status(500).send({
+          status: "Error",
+          message: "Error al elimimnar el carrito: " + err,
+        });
+      }
+
+      if (!deletedCart) {
+        return res.status(404).send({
+          status: "error",
+          messsage: "No se encontro el carrito para eliminar: " + err,
+        });
+      }
+
+      return res.status(200).send({ status: "success", deletedCart });
+    });
   },
 };
 

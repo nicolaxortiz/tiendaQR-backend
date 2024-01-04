@@ -34,6 +34,13 @@ let controller = {
   getProducts: (req, res) => {
     let query = Product.find({});
 
+    query.countDocuments({}, (err, count) => {
+      if (err) {
+        console.error(err);
+      }
+      console.log(`Número de documentos en la colección: ${count}`);
+    });
+
     query.sort("-date").exec((err, products) => {
       if (err) {
         return res.status(500).send({
@@ -50,6 +57,44 @@ let controller = {
 
       return res.status(200).send({ status: "success", products });
     });
+  },
+
+  // Listar productos con paginación
+  getRangeProducts: (req, res) => {
+    const page = parseInt(req.query.page) || 1; // Página actual, predeterminada: 1
+    const limit = 6; // Cantidad de productos por página, predeterminado: 10
+
+    const skip = (page - 1) * limit; // Calcular el número de documentos para omitir
+
+    Product.find({})
+      .sort("-date")
+      .skip(skip)
+      .limit(limit)
+      .exec((err, products) => {
+        if (err) {
+          return res.status(500).send({
+            status: "Error",
+            message: "Error al traer los productos",
+          });
+        }
+
+        if (!products || products.length === 0) {
+          return res.status(404).send({
+            status: "error",
+            message: "No hay producto para mostrar",
+          });
+        }
+
+        Product.countDocuments({}, (err, count) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+          return res
+            .status(200)
+            .send({ status: "success", totalCount: count, products });
+        });
+      });
   },
 
   //Listar  un producto

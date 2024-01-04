@@ -7,16 +7,12 @@ const fechaActual = new Date();
 
 const fechaLocalColombiana = fechaActual.toLocaleString("es-CO");
 
-let CartSchema = new Schema({
+let PurchaseSchema = new Schema({
   user_id: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  createdAt: {
-    type: String,
-    default: fechaLocalColombiana,
-  },
-  updatedAt: {
+  date: {
     type: String,
     default: fechaLocalColombiana,
   },
@@ -25,6 +21,14 @@ let CartSchema = new Schema({
       type: {},
     },
   ],
+  delivered: {
+    type: Boolean,
+    default: false,
+  },
+  isCancel: {
+    type: Boolean,
+    default: false,
+  },
 });
 
-module.exports = mongoose.model("Cart", CartSchema);
+module.exports = mongoose.model("Purchase", PurchaseSchema);

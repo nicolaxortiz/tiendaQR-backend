@@ -16,6 +16,7 @@ moongoose.Promise = global.Promise;
 let product_routes = require("./routes/product");
 let user_routes = require("./routes/user");
 let cart_routes = require("./routes/cart");
+let purchase_routes = require("./routes/purchase");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -38,6 +39,7 @@ app.use((req, res, next) => {
 app.use("/api", product_routes);
 app.use("/api", user_routes);
 app.use("/api", cart_routes);
+app.use("/api", purchase_routes);
 
 moongoose.connect(url, { useNewUrlParser: true }).then(() => {
   console.log("Conexion a la base de datos completada");
