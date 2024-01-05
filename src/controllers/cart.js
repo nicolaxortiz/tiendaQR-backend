@@ -9,8 +9,12 @@ let controller = {
 
     let cart = new Cart();
 
+    const fechaActual = new Date();
+    const fechaLocalColombiana = fechaActual.toLocaleString("es-CO");
+
     cart.user_id = params.user_id;
     cart.products = params.products;
+    cart.createdAt = fechaLocalColombiana;
 
     cart.save((err, cartStored) => {
       if (err || !cartStored) {
@@ -26,6 +30,7 @@ let controller = {
     });
   },
 
+  //obtener carrito por el id de usuario
   getCartbyUserId: (req, res) => {
     let user_id = req.body.user_id;
 
@@ -47,6 +52,7 @@ let controller = {
     });
   },
 
+  //actualizar carrito
   updateCart: (req, res) => {
     let params = req.body;
 
@@ -82,6 +88,7 @@ let controller = {
     );
   },
 
+  //eliminar carrito
   delete: (req, res) => {
     let cart_id = req.params.cartId;
 

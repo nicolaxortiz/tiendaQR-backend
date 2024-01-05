@@ -6,6 +6,7 @@ let Schema = mongoose.Schema;
 const fechaActual = new Date();
 
 const fechaLocalColombiana = fechaActual.toLocaleString("es-CO");
+console.log(fechaLocalColombiana);
 
 let CartSchema = new Schema({
   user_id: {

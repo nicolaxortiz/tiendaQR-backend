@@ -29,6 +29,9 @@ let PurchaseSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  updateDate: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Purchase", PurchaseSchema);
